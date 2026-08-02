@@ -152,3 +152,4 @@ docker compose up postgres
 docker cp "C:\Users\Elad Eytan Feldman\Desktop\K8S project\lab-job-board\backup_20260802_183125.sql" jobboard-db:/var/lib/postgresql/data
 docker exec -it jobboard-db psql -U postgres -d backup_20260802_183125.sql
 
+TEST
