@@ -24,7 +24,7 @@ metadata:
     app.kubernetes.io/name: jobs-ingress
   annotations:
     nginx.ingress.kubernetes.io/use-regex:       "true"
-    nginx.ingress.kubernetes.io/rewrite-target:  /jobs/$2
+    nginx.ingress.kubernetes.io/rewrite-target:  /jobs$1$2
     nginx.ingress.kubernetes.io/proxy-read-timeout: "30"
     nginx.ingress.kubernetes.io/limit-rps:       "30"
 spec:

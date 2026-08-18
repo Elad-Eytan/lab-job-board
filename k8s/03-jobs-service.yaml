@@ -46,6 +46,9 @@ spec:
           # For cloud:    replace with your registry image
           image: jobs-service:latest
           imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: jobboard-config
           ports:
             - containerPort: 8000
               name: http

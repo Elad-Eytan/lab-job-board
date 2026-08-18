@@ -151,3 +151,37 @@ If you need the flexibility of using a named volume, you should use that, it is 
 docker compose up postgres
 docker cp "C:\Users\Elad Eytan Feldman\Desktop\K8S project\lab-job-board\backup_20260802_183125.sql" jobboard-db:/var/lib/postgresql/data
 docker exec -it jobboard-db psql -U postgres -d backup_20260802_183125.sql
+
+---
+
+### Task 5 — Networking & Service Communication
+
+- List all containers on the network with their IP addresses
+
+Container_1: nginx-proxy
+IP: 172.19.0.6/16
+
+Container_2: jobboard-frontend
+IP: 172.19.0.5/16
+
+Container_3: jobs-service
+IP: 172.19.0.3/16
+
+Container_4: applications-service
+IP: 172.19.0.4/16
+
+Container_5: jobboard-db
+IP: 172.19.0.2/16
+
+- Explain how `jobs-service` resolves the hostname `postgres` (Docker's embedded DNS)
+
+The container of jobs-service resolves the hostname of postgres using the service name that had been set in the docker compose file, and since they are on the same network docker can resolve the serivce name and convert it to an IP address, kinda simmilar to how sevices are resolved in K8S.
+
+- What happens if you try to reach `jobs-service:8000` from your browser directly? Why?
+
+it wouldent work, its becuse the docker network (jobboard-network) is isolated from the host machine's network and only spesific ports and containers can be exposed (such as the FE container).
+
+#### 5.3 – Nginx routing analysis
+
+Browser → POST http://localhost/api/applications/ → localhost:80 → nginx container:80 → Nginx rewrites the path using "rewrite ^/api/applications/(.*) /applications/$1 break;", The rewritten path becomes: /applications/ → the request gose to http://applications_service, from there it is routed to http://applications-service:3001/applications/ → the request is reccived by "application-service", from here Express handles the request → the info is sent into PostgreSQL:5432 → PostgreSQL:5432 returns the query result → into applications-service:3001 → back to nginx:80 → back into the browser.
+

@@ -15,13 +15,14 @@ namespace: jobboard
 
 resources:
   - 00-namespace.yaml
-  - 01-secret.yaml          # copy from 01-secret.yaml.example first!
+  - 01-secret.yaml
   - 02-postgres.yaml
   - 03-jobs-service.yaml
   - 04-applications-service.yaml
   - 05-frontend.yaml
   - 06-ingress.yaml
   - 07-hpa.yaml
+  - 10-configmap.yaml
 
 # Uncomment after all services are Running + Ready:
 # - 08-seed-job.yaml
