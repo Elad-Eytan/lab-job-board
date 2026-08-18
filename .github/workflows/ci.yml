@@ -154,6 +154,14 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v7
 
+      - name: Generate temporary database secret
+        run: |
+          umask 077
+          DB_PASSWORD="$(openssl rand -hex 32)"
+          printf '%s' "$DB_PASSWORD" > db_password.txt
+
+      - name: Start application
+        run: docker compose up --build --detach --wait --wait-timeout 240
       - name: Start application
         run: docker compose up --build --detach --wait --wait-timeout 240
 
@@ -187,6 +195,7 @@ jobs:
       - name: Stop application
         if: always()
         run: docker compose down --volumes
+             rm -f db_password.txt
 
   push-to-registry:
     name: push-to-registry
