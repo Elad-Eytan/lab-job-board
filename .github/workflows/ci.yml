@@ -251,8 +251,13 @@ jobs:
     # Do not start until all images have been pushed successfully.
     needs: push-to-registry
 
-    # Deployment should only happen for a push to main.
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    # A GitHub-hosted runner cannot reach the local Minikube cluster.
+    # Set the repository variable ENABLE_K8S_DEPLOY=true when a reachable
+    # Kubernetes cluster (or suitable self-hosted runner) is available.
+    if: >
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main' &&
+      vars.ENABLE_K8S_DEPLOY == 'true'
 
     env:
       NAMESPACE: jobboard
